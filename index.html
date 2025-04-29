@@ -1,37 +1,447 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Universo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Para la niña más hermosa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --lila: #D8BFD8;
+      --lila-dark: #B39BC8;
+      --text-dark: #333;
+      --note-bg: #fff9a6;
+      --note-shadow: rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--lila);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--lila-dark);
+      padding: 1.5rem 1rem;
+      color: #fff;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    #headerTime {
+      margin-top: 0.8rem;
+      font-weight: bold;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .float {
+      position: absolute;
+      z-index: 1;
+    }
+
+    .heart {
+      width: 12px;
+      height: 12px;
+      background: red;
+      transform: rotate(45deg);
+      opacity: 0.8;
+      animation: fall 5s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -6px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 6px;
+      top: 0;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(45deg);
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(45deg);
+      }
+    }
+
+    .tulip {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      animation: tulipFall 7s linear infinite;
+    }
+
+    @keyframes tulipFall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+    .note {
+      position: absolute;
+      width: 160px;
+      padding: 1rem;
+      background: var(--note-bg);
+      box-shadow: 2px 2px 8px var(--note-shadow);
+      font-style: italic;
+      font-size: 0.85rem;
+      line-height: 1.2;
+      transform: rotate(calc(-5deg + var(--r) * 1deg));
+      z-index: 2;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-image: linear-gradient(#fff9a6, #fff7c2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .note::before {
+      content: '📎';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2rem;
+    }
+
+    /* Estilos para la nota expandida */
+    .note.expanded {
+      width: 250px;
+      min-height: 150px;
+      font-size: 1rem;
+      line-height: 1.4;
+      transform: none;
+      z-index: 5;
+    }
+
+    .note-title {
+      font-weight: bold;
+    }
+
+    .note-content {
+      display: none;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-size: 0.85rem;
+    }
+
+    .note.expanded .note-content {
+      display: block;
+    }
+
+    .letter-closed {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 220px;
+      height: 140px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 2;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .letter-closed:hover {
+      transform: translate(-50%, -50%) scale(1.03);
+    }
+
+    .letter-closed::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: #ccc;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+
+    .letter-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      text-align: left;
+      display: none;
+    }
+
+    .letter-container h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .letter-container p {
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .letter-time {
+      font-weight: bold;
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    #bgAudio {
+      display: none;
+    }
+
+    #playMusicTextBottom {
+      position: fixed;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      color: #B39BC8;
+      width: 90%;
+      max-width: 300px;
+    }
+
+    .play-button {
+      padding: 12px 25px;
+      background-color: #B39BC8;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      margin-top: 0.5rem;
+      width: 100%;
+      max-width: 200px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem !important;
+      }
+
+      header p {
+        font-size: 0.85rem;
+      }
+
+      .letter-closed {
+        height: 120px;
+        font-size: 0.9rem;
+      }
+
+      .note {
+        display: none;
+      }
+
+      .letter-container {
+        padding: 1.2rem;
+      }
+
+      .letter-container h2 {
+        font-size: 1.5rem !important;
+      }
+
+      .letter-container p {
+        font-size: 0.9rem !important;
+      }
+
+      #playMusicTextBottom {
+        bottom: 5%;
+        font-size: 0.9rem;
+      }
+
+      .play-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <h1>El Universo</h1>
-    <center><img src="img/universo.jpg" width="500" height="400" alt="Imagen del universo"></center>
-    <hr>
-    <marquee> <h3>coffe and tea</h3></marquee>
+  <div id="playMusicTextBottom">
+    <p>Antes de leer, reproduce la canción 🎶</p>
+    <button id="playMusicBtnBottom" class="play-button">🎵 Reproducir Canción</button>
+  </div>
 
-    <h3>¿Qué es el universo?</h3>
+  <audio id="bgAudio" src="Karaoke Mi vida entera (live) - Morat.mp3" loop></audio>
 
-    <p>
-        El universo es la conjunción de todo aquello existente; ya sea material como los planetas, las
-        estrellas, galaxias o en contrariedad inmaterial como la energía, el espacio o el tiempo. Es por esto,
-        que podemos afirmar que el universo es el espacio y el tiempo en el que se encuentran los planetas y sus
-        leyes físicas que los rigen (como por ejemplo la ley de gravedad).
-    </p>
+  <header>
+    <h1>Para la niña más hermosa</h1>
+    <p>Tu carta y nuestros recuerdos en un solo lugar</p>
+    <div id="headerTime"></div>
+  </header>
 
-    <p>
-        El universo, a grandes rasgos, <i>está formado por galaxias interconectadas que originan cúmulos de
-            galaxias</i> que a su vez se relacionan con otros cúmulos generando, en consecuencia, <u>una red cósmica que se
-                expande a lo largo del universo.</u>
-    </p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/GP-EWh7Qnuo?si=uQ-LLlytMndWSmtE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <div class="letter-closed" onclick="openLetter()">
+    <small>Pulsa para abrir la carta</small>
+  </div>
 
-    <p>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.073403409464!2d-74.831406!3d11.0331196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef42dcd3d6938e1%3A0x527603845e08728c!2sVentana%20al%20Mundo!5e0!3m2!1ses-419!2sco!4v1737822816171!5m2!1ses-419!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </p>
+  <div class="letter-container" id="letter">
+    <h2>Mi Querida</h2>
+    <p>Desde el primer día desde que somos novios todo cambió, ahora ya no me encontraba solo ahora tenía a una
+      compañera a mi lado la cual al día de hoy sigue conmigo. Han sido días tanto felices como tristes pero el amor no
+      se ha acabado, el amor va creciendo día tras día, me siento tan pero tan enamorado de ti en estos momentos que a
+      veces no sé cómo hacerte saber que es demasiado, que no es algo que las palabras puedan llegar a describir.</p>
+    <p>Cada paso que damos juntos me enseña el verdadero significado de la felicidad. Eres mi inspiración y mi fuerza, y
+      no hay nada que desee más que construir nuestro futuro de la mano, tener todo eso soñado. TE AMO VIDA MÍA.</p>
+    <p class="letter-time">Juntos por <span id="timeTogether"></span>.</p>
+  </div>
+
+  <script>
+    // Reproducir música de fondo
+    document.getElementById('playMusicBtnBottom').addEventListener('click', function () {
+      const audio = document.getElementById('bgAudio');
+      audio.volume = 0.2;
+      audio.play();
+      this.style.display = 'none';
+      document.getElementById('playMusicTextBottom').style.display = 'none';
+    });
+
+    // Abrir carta
+    function openLetter() {
+      document.querySelector('.letter-closed').style.display = 'none';
+      document.getElementById('letter').style.display = 'block';
+    }
+
+    // Corazoncitos y tulipanes flotantes
+    function spawnFloats(count, className, symbol) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'float ' + className;
+        if (symbol) el.innerHTML = symbol;
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (4 + Math.random() * 4) + 's';
+        document.body.appendChild(el);
+      }
+    }
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    spawnFloats(isMobile ? 20 : 40, 'heart');
+    spawnFloats(isMobile ? 30 : 15, 'tulip', '🌷');
+
+    const notes = [
+    { title: '"Porque eres una en un millón"', content: "como ya dije no eres una en un millón, eres una en la vida." },
+    { title: '"Darte una vida con más sumas que restas"', content: "Cada sonrisa tuya es una suma que hace todo mejor." },
+    { title: '"Mi suerte la usé en encontrarte a ti"', content: "Eres la coincidencia más bonita que la vida me regaló." },
+    { title: '"Y es que al fin, si lo piensas, no es tan loco"', content: "Dame todo, dame todo, Di que sí." },
+    { title: '"Cuando tú estás desaparece el mundo"', content: "Contigo, hasta el silencio tiene melodía." },
+    { title: '"Ser el río que recorre tu ciudad amurallada"', content: "Quisiera ser el abrazo que derribe tus murallas." },
+    { title: '"Aunque me falte el aire, siempre hay un aliento junto a ti"', content: "Eres la calma que llena mis vacíos." },
+    { title: '"cuando estás, es tan bonita la tarde"', content: "Tu presencia pinta de colores hasta los días grises." },
+    { title: '"Una vida si te vas es solo sobrevivir"', content: "Eres la chispa que le da sentido a mis días." },
+    { title: '"Cuando ella está a mi lado se equilibra la balanza"', content: "Eres mi punto de equilibrio en el caos del mundo." },
+  ];
+
+  // Posiciones suficientes para todas las notas
+  const positions = [
+    ['10vw', '20vh'], ['70vw', '15vh'], ['5vw', '65vh'], ['75vw', '60vh'],
+    ['20vw', '30vh'], ['80vw', '35vh'], ['25vw', '70vh'], ['60vw', '75vh'],
+    ['15vw', '50vh'], ['84vw', '75vh']
+  ];
+
+  notes.forEach((noteData, i) => {
+    const note = document.createElement('div');
+    note.className = 'note';
+    note.innerHTML = `
+      <div class="note-title">${noteData.title}</div>
+      <div class="note-content">${noteData.content}</div>
+    `;
+    note.style.setProperty('--r', (Math.random() * 10 - 5).toFixed(2));
+    note.style.left = positions[i][0];
+    note.style.top = positions[i][1];
+    document.body.appendChild(note); // ¡No olvides agregarlo al body!
+  
+
+      // Expander nota al clic
+      note.addEventListener('click', function (e) {
+        e.stopPropagation();
+        document.querySelectorAll('.note.expanded').forEach(n => n.classList.remove('expanded'));
+        this.classList.add('expanded');
+      });
+
+      document.body.appendChild(note);
+    });
+
+    // Cerrar nota al clic fuera
+    document.body.addEventListener('click', function () {
+      document.querySelectorAll('.note.expanded').forEach(n => n.classList.remove('expanded'));
+    });
+
+    // Contador de tiempo juntos
+    const start = new Date('2023-12-08T00:00:00');
+    function updateTime() {
+      const diff = Date.now() - start;
+      const days = Math.floor(diff / 86400000);
+      const hrs = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const str = `${days} días, ${hrs} horas y ${mins} minutos`;
+      document.getElementById('timeTogether').textContent = str;
+      document.getElementById('headerTime').textContent = `Juntos por ${str}`;
+    }
+    setInterval(updateTime, 60000);
+    updateTime();
+  </script>
 </body>
 
 </html>
